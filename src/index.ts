@@ -173,39 +173,35 @@ export class MyMCP extends McpAgent {
 			},
 		);
 
-		// Fibonacci sequence tool
+		// Fibonacci number at position tool
 		this.server.tool(
 			"calculate_fibonacci",
-			"Generate Fibonacci sequence up to the n-th term",
+			"Calculate the Fibonacci number at a specific position (0-indexed)",
 			{
-				n: z.number().describe("The number of terms in the Fibonacci sequence"),
+				position: z.number().describe("The position in the Fibonacci sequence (0-indexed)"),
 			},
-			async ({ n }) => {
-				if (n <= 0 || !Number.isInteger(n)) {
+			async ({ position }) => {
+				if (position < 0 || !Number.isInteger(position)) {
 					return {
 						content: [
 							{
 								type: "text",
-								text: "Error: Input must be a positive integer",
+								text: "Error: Position must be a non-negative integer",
 							},
 						],
 					};
-				};
-				const fibSequence: number[] = [];
-				for (let i = 0; i < n; i++) {
-					if (i === 0) {
-						fibSequence.push(0);
-					} else if (i === 1) {
-						fibSequence.push(1);
-					} else {
-						fibSequence.push(fibSequence[i - 1] + fibSequence[i - 2]);
-					}
+				}
+				let a = 0, b = 1, fib = position === 0 ? 0 : 1;
+				for (let i = 2; i <= position; i++) {
+					fib = a + b;
+					a = b;
+					b = fib;
 				}
 				return {
 					content: [
 						{
-								type: "text",
-								text: fibSequence.join(", "),
+							type: "text",
+							text: String(fib),
 						},
 					],
 				};
