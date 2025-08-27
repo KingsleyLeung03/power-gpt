@@ -88,6 +88,268 @@ export class MyMCP extends McpAgent {
 			}),
 		);
 
+		// Simple exponentiation tool
+		this.server.tool(
+			"calculate_exponent",
+			"Simple exponentiation of two numbers",
+			{
+				base: z.number().describe("Base number"),
+				exponent: z.number().describe("Exponent number"),
+			},
+			async ({ base, exponent }) => ({
+				content: [
+					{
+						type: "text",
+						text: String(base ** exponent),
+					},
+				],
+			}),
+		);
+
+		// Root extraction tool
+		this.server.tool(
+			"calculate_root",
+			"Extract the n-th root of a number",
+			{
+				number: z.number().describe("The number to extract the root from"),
+				root: z.number().describe("The degree of the root to extract"),
+			},
+			async ({ number, root }) => ({
+				content: [
+					{
+						type: "text",
+						text: root === 0 ? "Error: Root degree cannot be zero" : String(number ** (1 / root)),
+					},
+				],
+			}),
+		);
+
+		// Modulus tool
+		this.server.tool(
+			"calculate_modulus",
+			"Calculate the modulus of two numbers",
+			{
+				a: z.number().describe("The dividend"),
+				b: z.number().describe("The divisor"),
+			},
+			async ({ a, b }) => ({
+				content: [
+					{
+						type: "text",
+						text: b === 0 ? "Error: Cannot perform modulus with divisor zero" : String(a % b),
+					},
+				],
+			}),
+		);
+
+		// Factorial tool
+		this.server.tool(
+			"calculate_factorial",
+			"Calculate the factorial of a non-negative integer",
+			{
+				n: z.number().describe("The non-negative integer"),
+			},
+			async ({ n }) => {
+				const factorial = (num: number): number => {
+					if (num < 0) return NaN; // Factorial is not defined for negative numbers
+					if (!Number.isInteger(num)) return NaN; // Factorial is only defined for integers
+					if (num === 0 || num === 1) return 1;
+
+					let result = 1;
+					for (let i = 2; i <= num; i++) {
+						result *= i;
+					}
+
+					return result;
+				};
+				return {
+					content: [
+						{
+							type: "text",
+							text: Number.isNaN(factorial(n)) ? "Error: Input must be a non-negative integer" : String(factorial(n)),
+						},
+					],
+				};
+			},
+		);
+
+		// Fibonacci sequence tool
+		this.server.tool(
+			"calculate_fibonacci",
+			"Generate Fibonacci sequence up to the n-th term",
+			{
+				n: z.number().describe("The number of terms in the Fibonacci sequence"),
+			},
+			async ({ n }) => {
+				if (n <= 0 || !Number.isInteger(n)) {
+					return {
+						content: [
+							{
+								type: "text",
+								text: "Error: Input must be a positive integer",
+							},
+						],
+					};
+				};
+				const fibSequence: number[] = [];
+				for (let i = 0; i < n; i++) {
+					if (i === 0) {
+						fibSequence.push(0);
+					} else if (i === 1) {
+						fibSequence.push(1);
+					} else {
+						fibSequence.push(fibSequence[i - 1] + fibSequence[i - 2]);
+					}
+				}
+				return {
+					content: [
+						{
+								type: "text",
+								text: fibSequence.join(", "),
+						},
+					],
+				};
+			},
+		);
+
+		// Prime number check tool
+		this.server.tool(
+			"check_prime",
+			"Check if a number is prime",
+			{
+				n: z.number().describe("The number to check for primality"),
+			},
+			async ({ n }) => {
+				if (n <= 1 || !Number.isInteger(n)) {
+					return {
+						content: [
+							{
+								type: "text",
+								text: "Error: Input must be an integer greater than 1",
+							},
+						],
+					};
+				}
+				for (let i = 2; i <= Math.sqrt(n); i++) {
+					if (n % i === 0) {
+						return {
+							content: [
+								{
+									type: "text",
+									text: `${n} is not a prime number`,
+								},
+							],
+						};
+					}
+				}
+				return {
+					content: [
+						{
+							type: "text",
+							text: `${n} is a prime number`,
+						},
+					],
+				};
+			},
+		);
+
+		// Greatest common divisor (GCD) tool
+		this.server.tool(
+			"calculate_gcd",
+			"Calculate the greatest common divisor (GCD) of two numbers",
+			{
+				a: z.number().describe("First number"),
+				b: z.number().describe("Second number"),
+			},
+			async ({ a, b }) => {
+				const gcd = (x: number, y: number): number => {
+					if (!Number.isInteger(x) || !Number.isInteger(y)) return NaN;
+					x = Math.abs(x);
+					y = Math.abs(y);
+					while (y) {
+						const temp = y;
+						y = x % y;
+						x = temp;
+					}
+					return x;
+				};
+				const result = gcd(a, b);
+				return {
+					content: [
+						{
+							type: "text",
+							text: Number.isNaN(result) ? "Error: Inputs must be integers" : String(result),
+						},
+					],
+				};
+			},
+		);
+
+		// Least common multiple (LCM) tool
+		this.server.tool(
+			"calculate_lcm",
+			"Calculate the least common multiple (LCM) of two numbers",
+			{
+				a: z.number().describe("First number"),
+				b: z.number().describe("Second number"),
+			},
+			async ({ a, b }) => {
+				const gcd = (x: number, y: number): number => {
+					if (!Number.isInteger(x) || !Number.isInteger(y)) return NaN;
+					x = Math.abs(x);
+					y = Math.abs(y);
+					while (y) {
+						const temp = y;
+						y = x % y;
+						x = temp;
+					}
+					return x;
+				};
+				const lcm = (x: number, y: number): number => {
+					if (!Number.isInteger(x) || !Number.isInteger(y)) return NaN;
+					if (x === 0 || y === 0) return 0;
+					return Math.abs((x * y) / gcd(x, y));
+				};
+				const result = lcm(a, b);
+				return {
+					content: [
+						{
+							type: "text",
+							text: Number.isNaN(result) ? "Error: Inputs must be integers" : String(result),
+						},
+					],
+				};
+			},
+		);
+
+		// Compare two numbers tool
+		this.server.tool(
+			"compare_numbers",
+			"Compare two numbers and determine their relationship",
+			{
+				a: z.number().describe("First number to compare"),
+				b: z.number().describe("Second number to compare"),
+			},
+			async ({ a, b }) => {
+				let comparison: string;
+				if (a < b) {
+					comparison = "less than";
+				} else if (a > b) {
+					comparison = "greater than";
+				} else {
+					comparison = "equal to";
+				}
+				return {
+					content: [
+						{
+							type: "text",
+							text: `${a} is ${comparison} ${b}`,
+						},
+					],
+				};
+			},
+		);
+
 		// Random number tool
 		this.server.tool(
 			"random_number",
@@ -219,6 +481,8 @@ export class MyMCP extends McpAgent {
 				}
 			},
 		);
+
+		
 	}
 }
 
