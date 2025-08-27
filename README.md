@@ -4,6 +4,8 @@ Kingsley Leung (Zihong Liang)
 
 A small, focused remote MCP (Model Context Protocol) server deployed on Cloudflare Workers that exposes customised tools to remote MCP clients.
 
+![Claude_Desktop_Demo](/assets/images/Claude_Desktop_Demo.png)  
+
 ## Why this project exists 💡
 
 - Large language models still struggle with basic arithmetic and numeric reasoning. Short, viral examples like the "9.11 vs 9.9, which is bigger" question highlighted how easily models can make simple mistakes (see this article for one viral example: https://towardsdatascience.com/9-11-or-9-9-which-one-is-higher-6efbdbd6a025/). This project provides reliable, auditable tools (for example, calculators) that can be plugged into LLM workflows via MCP so clients can delegate numeric tasks to a deterministic service.
