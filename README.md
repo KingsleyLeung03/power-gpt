@@ -6,7 +6,7 @@ A small, focused remote MCP (Model Context Protocol) server deployed on Cloudfla
 
 ## Why this project exists 💡
 
-- Large language models still struggle with basic arithmetic and numeric reasoning. Short, viral examples like the "9.11 vs 9.9, which is bigger" question highlighted how easily models can make simple mistakes. This project provides reliable, auditable tools (for example, calculators) that can be plugged into LLM workflows via MCP so clients can delegate numeric tasks to a deterministic service.
+- Large language models still struggle with basic arithmetic and numeric reasoning. Short, viral examples like the "9.11 vs 9.9, which is bigger" question highlighted how easily models can make simple mistakes (see this article for one viral example: https://towardsdatascience.com/9-11-or-9-9-which-one-is-higher-6efbdbd6a025/). This project provides reliable, auditable tools (for example, calculators) that can be plugged into LLM workflows via MCP so clients can delegate numeric tasks to a deterministic service.
 - I also noticed some locally hosted LLMs may not have internet access. To address this, the server includes an MCP tool that extracts and returns text from a URL. That lets offline or restricted models access web content via the MCP while centralising fetching and sanitisation, which improves security and auditability.
 
 ## Live deployment 🚀
