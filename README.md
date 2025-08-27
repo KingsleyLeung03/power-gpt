@@ -90,6 +90,7 @@ Below are the MCP tools currently exposed by this server. Each tool lists its pu
 - mcp-remote (local proxy for MCP servers)
 - Cloudflare AI Playground and Claude Desktop for testing and clients
 - GitHub Actions for auto deployment
+- Docker
 
 ## Project layout 📁
 
@@ -109,4 +110,18 @@ This will deploy your MCP server to a URL like: `power-gpt.<your-account>.worker
 ```bash
 bun install
 bun start
+```
+
+### Local deployment — Docker
+
+You can run the project inside Docker for a reproducible local environment.
+
+Build the image and run a container:
+
+```bash
+# Build the image (run from repo root)
+docker build -t power-gpt .
+
+# Run the container and publish the app port to the host
+docker run -p 8787:8787 power-gpt:latest
 ```
